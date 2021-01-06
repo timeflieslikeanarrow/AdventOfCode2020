@@ -1,3 +1,3 @@
 # AdventOfCode2020
 
-Use JavaCC to solve Day 18 problems.
+Use JavaCC to solve Day 18/part2.
