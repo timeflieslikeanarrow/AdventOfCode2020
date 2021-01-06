@@ -1,0 +1,77 @@
+options {
+    STATIC = false ;
+}
+
+PARSER_BEGIN(Calculator)
+public class Calculator {
+}
+PARSER_END(Calculator)
+
+SKIP : { " " }
+TOKEN : { < LPAREN : "(" > }
+TOKEN : { < RPAREN : ")" > }
+
+TOKEN : {
+    < PLUS : "+" >
+    | <TIMES : "*">
+}
+
+TOKEN : {
+    < NUMBER : (["0"-"9"])+ >
+}
+
+long compute() :
+{
+ long result = 0;
+}
+{
+    (
+        result = expression()
+    )*
+    <EOF>
+    { return result; }
+}
+
+long expression() throws NumberFormatException :
+{
+    long i ;
+    long value ;
+}
+{
+    value = term()
+    (
+         <TIMES>
+        i = term()
+        { value *= i ; }
+    )*
+    { return value ; }
+}
+
+long term() throws NumberFormatException :
+{
+    long i ;
+    long value ;
+}
+{
+    value = primary()
+    (
+        <PLUS>
+        i = primary()
+        { value += i ; }
+    )*
+    { return value ; }
+}
+
+long primary() throws NumberFormatException :
+{
+    Token t;
+    long value;
+}
+{
+    t = <NUMBER>
+    { return Long.parseLong( t.image ) ; }
+    | <LPAREN>
+      value = expression()
+      <RPAREN>
+      { return value; }
+}
